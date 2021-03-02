@@ -73,6 +73,12 @@ Be sure to grab the output value and place into a variable.
 
 ### 3.  Post to the Storage Queue
 
+We will create an additional Web activity to put a message onto a queue through a POST api call
+
+Reference Document: 
+[https://docs.microsoft.com/en-us/rest/api/storageservices/put-message](https://docs.microsoft.com/en-us/rest/api/storageservices/put-message)
+
+
 Create a web activity  - set the Url, Body is the queueMessage (this is a post)
 
 **For the URL**
