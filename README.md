@@ -2,7 +2,7 @@ Writing to a Storage Queue Securely from ADF.
 
 ![Graphical user interface, text Description automatically generated](media/f81ce843cdc964346339fa713b0db139.png)
 
-Steps:
+### Steps:
 
 1.  Retrieve SAS Key from Key Vault.
 
@@ -11,7 +11,8 @@ Steps:
 
 3.  Post to the Storage Queue
 
-Retrieve SAS key from Key Vault.
+
+### 1. Retrieve SAS key from Key Vault.
 
 Reference Document: [Use Azure Key Vault secrets in pipeline activities - Azure
 Data Factory \| Microsoft
@@ -23,13 +24,11 @@ grab the version specific url.
 For this pipeline, I create a few parameters
 
 
-Parameter Name | Value
+|Parameter Name | Value|
 ------ | ------
-account   | storagename  
-
-queue | queue name
-
-kvurl = url for key vault secret
+|account   | storagename  |
+|queue | queue name|
+|kvurl | url for key vault secret|
 
 
 
@@ -49,6 +48,7 @@ The Web Request is a GET, the url
 @concat(pipeline().parameters.kvurl,'?api-version=7.0')
 ```
 
+### 2.  Set a variable to hold that value (technically not needed, but makes things clean
 
 Be sure to grab the output value and place into a variable.
 
@@ -56,6 +56,14 @@ Be sure to grab the output value and place into a variable.
 
 ![Graphical user interface, application Description automatically generated](media/b9ec104398bd44e2a142c23ecb48215f.png)
 
-Finish that up with a post
+### 3.  Post to the Storage Queue
+
+Create a web activity  - set the Url, Body is the queueMessage (this is a post)
+
+**For the URL**
+```
+@concat('https://',  pipeline().parameters.account, '.queue.core.windows.net/', pipeline().parameters.queue, '/messages?visibilitytimeout=30&timeout=30','&', variables('theKey'))
+```
+
 
 ![Graphical user interface, text, application Description automatically generated](media/afc5cc7d0b99603c9a94e678e90b0fa9.png)
