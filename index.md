@@ -1,37 +1,84 @@
-## Welcome to GitHub Pages
+## Writing to a Storage Queue Securely from ADF.
 
-You can use the [editor on GitHub](https://github.com/memasanz/ADFToStorageQueueWriteUp/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+![Graphical user interface, text Description automatically generated](media/f81ce843cdc964346339fa713b0db139.png)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Steps:
 
-### Markdown
+1.  Retrieve SAS Key from Key Vault.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+2.  Set a variable to hold that value (technically not needed, but makes things)
+    clean
 
-```markdown
-Syntax highlighted code block
+3.  Post to the Storage Queue
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+### 1. Retrieve SAS key from Key Vault.
 
-1. Numbered
-2. List
+Reference Document: [Use Azure Key Vault secrets in pipeline activities - Azure
+Data Factory \| Microsoft
+Docs](https://docs.microsoft.com/en-us/azure/data-factory/how-to-use-azure-key-vault-secrets-pipeline-activities)
 
-**Bold** and _Italic_ and `Code` text
+For a secret stored in key vault – each version will have a url, so be sure to
+grab the version specific url.
 
-[Link](url) and ![Image](src)
+For this pipeline, I create a few parameters
+
+
+|Parameter Name | Value| Example |
+------ | ------ | ------ 
+|account   | storagename  | mmmxstoragexdev |
+|queue | queue name| demoqueue|
+|kvurl | url for key vault secret| sv=2020-02-10&ss=.....|
+
+*Note* the SAS Key - remove the ? when you store it in keyvault.
+
+![Graphical user interface, table Description automatically generated](media/09e3e75c4244c5e74ff39f9fe4684614.png)
+
+We will make a Web request that is a get. For this to work with MSI
+authentication, be sure to provide access to your ADF Instance in your key vault
+instance.
+
+![Graphical user interface, text, application, email Description automatically generated](media/13c258acff40bca82a605754037a383d.png)
+
+We will be sure to add the api version to the url - as shown below.
+
+![Graphical user interface, application Description automatically generated](media/9dcea0a4cc3687f638788de9534adf41.png)
+
+The Web Request is a GET, the url 
+
+```
+@concat(pipeline().parameters.kvurl,'?api-version=7.0')
+```
+The Resource is:
+```
+https://vault.azure.net
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+After you get it going, you should set the Secure output for the key so it won't show up in the logs
 
-### Jekyll Themes
+![](media/SecureInputOutput.PNG)
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/memasanz/ADFToStorageQueueWriteUp/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+### 2.  Set a variable to hold that value (technically not needed, but makes things clean
 
-### Support or Contact
+Be sure to grab the output value and place into a variable.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+![Graphical user interface, text, application Description automatically generated](media/f18427421bd98d7e551f553a779f50f9.png)
+
+```
+@activity('GetKeyFromKV').output.value
+```
+
+
+![Graphical user interface, application Description automatically generated](media/b9ec104398bd44e2a142c23ecb48215f.png)
+
+### 3.  Post to the Storage Queue
+
+Create a web activity  - set the Url, Body is the queueMessage (this is a post)
+
+**For the URL**
+```
+@concat('https://',  pipeline().parameters.account, '.queue.core.windows.net/', pipeline().parameters.queue, '/messages?visibilitytimeout=30&timeout=30','&', variables('theKey'))
+```
+
+
+![Graphical user interface, text, application Description automatically generated](media/afc5cc7d0b99603c9a94e678e90b0fa9.png)
