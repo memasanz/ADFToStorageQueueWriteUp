@@ -6,7 +6,7 @@
 
 1.  Retrieve SAS Key from Key Vault.
 
-2.  Set a variable to hold that value (technically not needed, but makes things
+2.  Set a variable to hold that value (technically not needed, but makes things)
     clean
 
 3.  Post to the Storage Queue
@@ -40,6 +40,8 @@ instance.
 
 ![Graphical user interface, text, application, email Description automatically generated](media/13c258acff40bca82a605754037a383d.png)
 
+We will be sure to add the api version to the url - as shown below.
+
 ![Graphical user interface, application Description automatically generated](media/9dcea0a4cc3687f638788de9534adf41.png)
 
 The Web Request is a GET, the url 
@@ -61,6 +63,11 @@ After you get it going, you should set the Secure output for the key so it won't
 Be sure to grab the output value and place into a variable.
 
 ![Graphical user interface, text, application Description automatically generated](media/f18427421bd98d7e551f553a779f50f9.png)
+
+```
+@activity('GetKeyFromKV').output.value
+```
+
 
 ![Graphical user interface, application Description automatically generated](media/b9ec104398bd44e2a142c23ecb48215f.png)
 
