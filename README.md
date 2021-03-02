@@ -73,6 +73,12 @@ Be sure to grab the output value and place into a variable.
 
 ### 3.  Post to the Storage Queue
 
+We will create an additional Web activity to put a message onto a queue through a POST api call
+
+Reference Document: 
+[https://docs.microsoft.com/en-us/rest/api/storageservices/put-message](https://docs.microsoft.com/en-us/rest/api/storageservices/put-message)
+
+
 Create a web activity  - set the Url, Body is the queueMessage (this is a post)
 
 **For the URL**
@@ -80,7 +86,5 @@ Create a web activity  - set the Url, Body is the queueMessage (this is a post)
 @concat('https://',  pipeline().parameters.account, '.queue.core.windows.net/', pipeline().parameters.queue, '/messages?visibilitytimeout=30&timeout=30','&', variables('theKey'))
 ```
 
-Reference Document: 
-[https://docs.microsoft.com/en-us/rest/api/storageservices/put-message](https://docs.microsoft.com/en-us/rest/api/storageservices/put-message)
 
 ![Graphical user interface, text, application Description automatically generated](media/afc5cc7d0b99603c9a94e678e90b0fa9.png)
