@@ -47,6 +47,14 @@ The Web Request is a GET, the url
 ```
 @concat(pipeline().parameters.kvurl,'?api-version=7.0')
 ```
+The Resource is:
+```
+https://vault.azure.net
+```
+
+After you get it going, you should set the Secure output for the key so it won't show up in the logs
+
+![](media/SecureInputOutput.PNG)
 
 ### 2.  Set a variable to hold that value (technically not needed, but makes things clean
 
