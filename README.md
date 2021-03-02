@@ -24,7 +24,7 @@ grab the version specific url.
 For this pipeline, I create a few parameters
 
 
-|Parameter Name | Value|
+|Parameter Name | Value| Example |
 ------ | ------ | ------ 
 |account   | storagename  | mmmxstoragexdev |
 |queue | queue name| demoqueue|
