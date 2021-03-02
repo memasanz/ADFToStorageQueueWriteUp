@@ -26,11 +26,11 @@ For this pipeline, I create a few parameters
 
 |Parameter Name | Value|
 ------ | ------
-|account   | storagename  |
-|queue | queue name|
-|kvurl | url for key vault secret|
+|account   | storagename  | mmmxstoragexdev |
+|queue | queue name| demoqueue|
+|kvurl | url for key vault secret| sv=2020-02-10&ss=.....|
 
-
+*Note* the SAS Key - remove the ? when you store it in keyvault.
 
 ![Graphical user interface, table Description automatically generated](media/09e3e75c4244c5e74ff39f9fe4684614.png)
 
